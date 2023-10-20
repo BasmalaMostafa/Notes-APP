@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +97,18 @@ class Components{
       text: 'Sign-In with Twitter',
     ),
   );
+
+  showPopUp(msg,context,type,title) {
+    return AwesomeDialog(
+        context: context,
+        dialogType: type,
+        animType: AnimType.rightSlide,
+        title: title,
+        desc: msg,
+        btnCancelOnPress: () {},
+    btnOkOnPress: () {},
+    ).show();
+  }
 
 
 }

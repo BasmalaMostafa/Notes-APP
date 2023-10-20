@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
       create: (BuildContext context) => AuthenticationCubit(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: FirebaseAuth.instance.currentUser == null ?LoginScreen():const HomePage(),
+        home: (FirebaseAuth.instance.currentUser != null && FirebaseAuth.instance.currentUser!.emailVerified) ?const HomePage():LoginScreen(),
         routes: {
           '/login': (context)  => LoginScreen(),
           '/signup' : (context) => SignUpScreen(),
