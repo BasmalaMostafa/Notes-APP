@@ -31,6 +31,7 @@ class LoginScreen extends StatelessWidget {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+
   }
 
   Future<UserCredential> signInWithFacebook() async {
@@ -38,7 +39,7 @@ class LoginScreen extends StatelessWidget {
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
     // Create a credential from the access token
-    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken.token);
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
     // Once signed in, return the UserCredential
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
@@ -219,14 +220,16 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(
                               height: 15.0,
                             ),
-                            components.googleButton(),
+                            components.googleButton(signInWithGoogle()),
                             const SizedBox(
                               height: 20.0,
                             ),
+                            //ASSSSSSSSSSSSSSSSSSKKKKKKKK
                             components.facebookButton(),
                             const SizedBox(
                               height: 20.0,
                             ),
+                            //ASSSSSSSSSSSSKKKKKKKKKKKK
                             components.twitterButton(),
                           ],
                         ),

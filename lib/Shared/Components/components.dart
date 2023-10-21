@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class Components{
     ),
   );
 
-  Widget googleButton() => Container(
+  Widget googleButton(Future<UserCredential> signInWithGoogle) => Container(
     width: double.infinity,
     height: 40.0,
     decoration: BoxDecoration(
@@ -77,7 +78,9 @@ class Components{
     ),
     child: SignInButton(
       Buttons.Google,
-      onPressed: () {},
+      onPressed: () {
+        signInWithGoogle;
+      },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
