@@ -16,9 +16,14 @@ class LoginScreen extends StatelessWidget {
 
   static const Components components = Components();
 
-  Future<UserCredential> signInWithGoogle() async {
+  //Asssssssssssssssssssssssssk no login
+  Future signInWithGoogle(context) async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    if(googleUser ==null){
+      return;
+    }
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -30,10 +35,12 @@ class LoginScreen extends StatelessWidget {
     );
 
     // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    await FirebaseAuth.instance.signInWithCredential(credential);
 
+    Navigator.of(context).pushNamedAndRemoveUntil('/homepage', (route) => false);
   }
 
+  //Assssssssssssssssssssssssk appid & appsecret
   Future<UserCredential> signInWithFacebook() async {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
@@ -166,7 +173,24 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 5,),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: TextButton(onPressed: () {  },
+                      child: TextButton(onPressed: () async{
+                        if(emailController.text == ''){
+                          components.showPopUp('please enter your email in the Email Address field and try again!',context,DialogType.warning,'Empty Email Address');
+                        }
+
+                        try{
+                            await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+
+                            components.showPopUp('A password reset link has been sent to your email Address,'
+                                ' please check your inbox to find it!',context,DialogType.success,'Password Reset');
+                        }catch (error){
+                          //ASSSSSSSSSSSSSSSSSSSSSSSK
+                          components.showPopUp('Invalid Email Address, please check that'
+                              ' the email you entered is correct!',context,DialogType.error,'Invalid Email Address');
+
+                          print(error.toString());
+                        }
+                      },
                       child: const Text("Forget Password?",
                         style: TextStyle(color: Colors.blue,fontSize: 17,fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline),)),
@@ -220,7 +244,11 @@ class LoginScreen extends StatelessWidget {
                             const SizedBox(
                               height: 15.0,
                             ),
-                            components.googleButton(signInWithGoogle()),
+                            components.googleButton(
+                                signInWithGoogle: () {
+                                  signInWithGoogle(context);
+                                }
+                            ),
                             const SizedBox(
                               height: 20.0,
                             ),

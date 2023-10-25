@@ -7,8 +7,9 @@ import 'package:my_project/modules/Authentication/Views/login_screen.dart';
 import 'package:my_project/modules/Authentication/Views/signup_screen.dart';
 
 import 'modules/Authentication/Views/home_layout.dart';
-import 'modules/Authentication/Views/home_screen.dart';
+import 'modules/Home/Views/home_screen.dart';
 import 'modules/Authentication/manager/authentication_cubit.dart';
+import 'modules/Home/Views/widgets/Categories/add_category.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,11 +51,28 @@ class _MyAppState extends State<MyApp> {
       create: (BuildContext context) => AuthenticationCubit(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          //primaryColor: Colors.orange,
+          primarySwatch: Colors.orange,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey[100],
+            titleTextStyle: const TextStyle(
+              color: Colors.orange,
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            ),
+            iconTheme: const IconThemeData(
+              color: Colors.orange,
+              size: 27
+            )
+          )
+        ),
         home: (FirebaseAuth.instance.currentUser != null && FirebaseAuth.instance.currentUser!.emailVerified) ?const HomePage():LoginScreen(),
         routes: {
           '/login': (context)  => LoginScreen(),
           '/signup' : (context) => SignUpScreen(),
           '/homepage' : (context) => const HomePage(),
+          '/addCategory' : (context) => AddCategory(),
         },
       ),
     );

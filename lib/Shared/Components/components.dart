@@ -69,7 +69,7 @@ class Components{
     ),
   );
 
-  Widget googleButton(Future<UserCredential> signInWithGoogle) => Container(
+  Widget googleButton({required Function() signInWithGoogle}) => Container(
     width: double.infinity,
     height: 40.0,
     decoration: BoxDecoration(
@@ -78,9 +78,8 @@ class Components{
     ),
     child: SignInButton(
       Buttons.Google,
-      onPressed: () {
-        signInWithGoogle;
-      },
+      onPressed: signInWithGoogle
+      ,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
