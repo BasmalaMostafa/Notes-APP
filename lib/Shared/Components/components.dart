@@ -100,7 +100,7 @@ class Components{
     ),
   );
 
-  showPopUp(msg,context,type,title,{deleteProcess,function}) {
+  showPopUp(msg,context,type,title,{deleteProcess=false,function}) {
     return AwesomeDialog(
         context: context,
         dialogType: type,
