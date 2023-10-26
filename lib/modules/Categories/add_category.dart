@@ -1,3 +1,5 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Shared/Components/components.dart';
@@ -10,6 +12,28 @@ class AddCategory extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  CollectionReference categories = FirebaseFirestore.instance.collection('categories');
+
+  Future<void> addCategory(context) async {
+    if (formKey.currentState!.validate()) {
+      try {
+        await categories.add({
+          'name': nameController.text,
+        }
+        );
+
+        // components.showPopUp('Category is added successfully!',
+        //     context, DialogType.success, 'Done');
+
+        Navigator.of(context).pushReplacementNamed('/homepage');
+      } catch (error) {
+        components.showPopUp('Failed to add Category: $error,'
+            ' please try again later!',
+            context, DialogType.error, 'Error');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +61,10 @@ class AddCategory extends StatelessWidget {
                     ),
                 const SizedBox(height: 20,),
                 SizedBox(
-                  width: 100,
+                  width: 150,
                   child: RawMaterialButton(
                     onPressed: () {
-
+                      addCategory(context);
                     },
                     fillColor: Colors.orange,
                     elevation: 0,
@@ -48,7 +72,7 @@ class AddCategory extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)
                     ),
-                    child: Text('Add',
+                    child: Text('Add'.toUpperCase(),
                       style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
                   ),
                 ),

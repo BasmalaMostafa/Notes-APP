@@ -7,9 +7,9 @@ import 'package:my_project/modules/Authentication/Views/login_screen.dart';
 import 'package:my_project/modules/Authentication/Views/signup_screen.dart';
 
 import 'modules/Authentication/Views/home_layout.dart';
+import 'modules/Categories/add_category.dart';
 import 'modules/Home/Views/home_screen.dart';
 import 'modules/Authentication/manager/authentication_cubit.dart';
-import 'modules/Home/Views/widgets/Categories/add_category.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
