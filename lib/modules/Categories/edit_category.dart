@@ -5,33 +5,40 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Shared/Components/components.dart';
 
-class AddCategory extends StatelessWidget {
-  AddCategory({super.key});
+class EditCategory extends StatefulWidget {
+  EditCategory({super.key, required this.categoryId, required this.oldName});
+
+  final String categoryId;
+
+  final String oldName;
 
   static const Components components = Components();
 
+  @override
+  State<EditCategory> createState() => _EditCategoryState();
+}
+
+class _EditCategoryState extends State<EditCategory> {
   final TextEditingController nameController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
   CollectionReference categories = FirebaseFirestore.instance.collection('categories');
 
-  Future<void> addCategory(context) async {
+  Future<void> editCategory(context) async {
     //loading here
     if (formKey.currentState!.validate()) {
       try {
-        await categories.add({
-          'userId': FirebaseAuth.instance.currentUser!.uid,
-          'name': nameController.text,
-        }
-        );
+        await categories.doc(widget.categoryId).update({
+          'name': nameController.text
+        });
 
         // components.showPopUp('Category is added successfully!',
         //     context, DialogType.success, 'Done');
 
         Navigator.of(context).pushNamedAndRemoveUntil('/homepage', (route) => false);
       } catch (error) {
-        components.showPopUp('Failed to add Category: $error,'
+        EditCategory.components.showPopUp('Failed to edit Folder name: $error,'
             ' please try again later!',
             context, DialogType.error, 'Error');
       }
@@ -39,10 +46,17 @@ class AddCategory extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    nameController.text = widget.oldName;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Folder'),
+        title: const Text('Edit Folder'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,9 +65,9 @@ class AddCategory extends StatelessWidget {
             key: formKey,
             child:Column(
               children: [
-                components.defaultFormField(
+                EditCategory.components.defaultFormField(
                     textInputType: TextInputType.text,
-                    text: 'Folder Name',
+                    text: 'New Folder Name',
                     prefixIcon: Icons.folder_copy_sharp,
                     controller: nameController,
                     validator:  (value) {
@@ -61,13 +75,13 @@ class AddCategory extends StatelessWidget {
                         return 'This Field is required';
                       }
                     }
-                    ),
+                ),
                 const SizedBox(height: 20,),
                 SizedBox(
                   width: 150,
                   child: RawMaterialButton(
                     onPressed: () {
-                      addCategory(context);
+                      editCategory(context);
                     },
                     fillColor: Colors.orange,
                     elevation: 0,
@@ -75,7 +89,7 @@ class AddCategory extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)
                     ),
-                    child: Text('Add'.toUpperCase(),
+                    child: Text('Edit'.toUpperCase(),
                       style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),),
                   ),
                 ),

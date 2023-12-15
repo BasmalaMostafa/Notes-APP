@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_project/modules/Categories/edit_category.dart';
 import 'package:my_project/modules/Home/Views/widgets/category_item.dart';
 
 import '../../../Shared/Components/components.dart';
@@ -64,15 +65,7 @@ class _HomePageState extends State<HomePage> {
            itemBuilder: (BuildContext context, int index) =>
                GestureDetector(
                  onLongPress: (){
-                   //assssssssssssssssssssssssssssssssskkkkkkkkkkkk
-                   const Components().showPopUp('Are you sure, you want to delete this folder?',
-                       context, DialogType.warning, 'Delete!',deleteProcess: true,function: () async{
-                         await FirebaseFirestore.instance.collection('categories').doc(data[index].id).delete();
-                         // setState(() {
-                         //
-                         // });
-                         Navigator.of(context).pushReplacementNamed('/homepage');
-                       });
+                   showMyDialog(context,data[index].id,data[index]['name']);
 
                    //Navigator.of(context).pushReplacementNamed('/homepage');
                  },
@@ -89,6 +82,54 @@ class _HomePageState extends State<HomePage> {
           size: 26,
         ),
       ),
+    );
+  }
+
+  showMyDialog(context,id, oldName){
+    return showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            content: SizedBox(
+              height: 100,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: MaterialButton(
+                        onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditCategory(categoryId: id, oldName: oldName)));
+                        },
+                      child: const Text('Edit Name',style: TextStyle(fontSize: 20,color: Colors.orange),),
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    width: double.infinity,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: MaterialButton(
+                      onPressed: (){
+                        //assssssssssssssssssssssssssssssssskkkkkkkkkkkk
+                        const Components().showPopUp('Are you sure, you want to delete this folder?',
+                            context, DialogType.warning, 'Delete!',deleteProcess: true,function: () async{
+                              await FirebaseFirestore.instance.collection('categories').doc(id).delete();
+                              // setState(() {
+                              //
+                              // });
+                              Navigator.of(context).pushReplacementNamed('/homepage');
+                            });
+                      },
+                      child: const Text('Delete',style: TextStyle(fontSize: 20,color: Colors.orange),),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        }
     );
   }
 }
