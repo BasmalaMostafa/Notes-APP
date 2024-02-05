@@ -29,7 +29,7 @@ class _EditCategoryState extends State<EditCategory> {
     //loading here
     if (formKey.currentState!.validate()) {
       try {
-        await categories.doc(widget.categoryId).update({
+        await categories.doc(widget.categoryId).update({       ///replace set instead update ,what is the benefit?
           'name': nameController.text
         });
 
@@ -50,6 +50,13 @@ class _EditCategoryState extends State<EditCategory> {
     // TODO: implement initState
     super.initState();
     nameController.text = widget.oldName;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    nameController.dispose();
   }
 
   @override

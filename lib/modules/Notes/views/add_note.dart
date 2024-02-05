@@ -2,34 +2,38 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_project/modules/Notes/views/note_screen.dart';
 
 import '../../../../../Shared/Components/components.dart';
 
-class AddCategory extends StatelessWidget {
-  AddCategory({super.key});
+class AddNote extends StatelessWidget {
+  final String categoryId;
+  final String categoryName;
+
+  AddNote({super.key, required this.categoryId, required this.categoryName});
 
   static const Components components = Components();
 
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController contentController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
-  CollectionReference categories = FirebaseFirestore.instance.collection('categories');
-
-  Future<void> addCategory(context) async {
+  Future<void> addNote(context) async {
     //loading here
+    CollectionReference notes = FirebaseFirestore.instance.collection('categories').doc(categoryId).collection('notes');
+
     if (formKey.currentState!.validate()) {
       try {
-        await categories.add({
-          'userId': FirebaseAuth.instance.currentUser!.uid,
-          'name': nameController.text,
+        await notes.add({
+          'note': contentController.text,
         }
         );
 
         // components.showPopUp('Category is added successfully!',
         //     context, DialogType.success, 'Done');
 
-        Navigator.of(context).pushNamedAndRemoveUntil('/homepage', (route) => false);
+        Navigator.of(context).push(MaterialPageRoute(builder:
+            (context)=> NoteScreen(categoryName: categoryName, categoryId: categoryId)));
       } catch (error) {
         components.showPopUp('Failed to add Category: $error,'
             ' please try again later!',
@@ -44,7 +48,7 @@ class AddCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Folder'),
+        title: const Text('Add Note'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -54,22 +58,23 @@ class AddCategory extends StatelessWidget {
             child:Column(
               children: [
                 components.defaultFormField(
+                  maxLines: 15,
                     textInputType: TextInputType.text,
-                    text: 'Folder Name',
-                    prefixIcon: Icons.folder_copy_sharp,
-                    controller: nameController,
+                    text: 'Enter your Note',
+                    prefixIcon: Icons.note_alt_outlined,
+                    controller: contentController,
                     validator:  (value) {
                       if (value == null || value.isEmpty) {
                         return 'This Field is required';
                       }
                     }
-                    ),
+                ),
                 const SizedBox(height: 20,),
                 SizedBox(
                   width: 150,
                   child: RawMaterialButton(
                     onPressed: () {
-                      addCategory(context);
+                      addNote(context);
                     },
                     fillColor: Colors.orange,
                     elevation: 0,

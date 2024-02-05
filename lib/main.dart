@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_project/modules/Authentication/Views/login_screen.dart';
 import 'package:my_project/modules/Authentication/Views/signup_screen.dart';
+import 'package:my_project/modules/Notes/views/note_screen.dart';
 
 import 'modules/Authentication/Views/home_layout.dart';
 import 'modules/Categories/add_category.dart';

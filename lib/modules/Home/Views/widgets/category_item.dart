@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import '../../../../Shared/Components/components.dart';
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key,required this.categoryName});
+  final bool isCategory;
+  const CategoryItem({super.key,required this.categoryName, required this.isCategory});
 
   final String categoryName;
 
@@ -17,7 +18,7 @@ class CategoryItem extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            const Image(image: AssetImage('assets/images/image_2.png'),height: 100,),
+            isCategory?const Image(image: AssetImage('assets/images/image_2.png'),height: 100,):Container(),
             const SizedBox(height: 5,),
             Text(categoryName,style: const TextStyle(fontWeight: FontWeight.bold),)
           ],

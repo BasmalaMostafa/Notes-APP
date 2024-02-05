@@ -7,6 +7,7 @@ import 'package:my_project/modules/Categories/edit_category.dart';
 import 'package:my_project/modules/Home/Views/widgets/category_item.dart';
 
 import '../../../Shared/Components/components.dart';
+import '../../Notes/views/note_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -64,12 +65,15 @@ class _HomePageState extends State<HomePage> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 150),
            itemBuilder: (BuildContext context, int index) =>
                GestureDetector(
+                 onTap: (){
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoteScreen(categoryName: data[index]['name'],categoryId:data[index].id ,)));
+                 },
                  onLongPress: (){
                    showMyDialog(context,data[index].id,data[index]['name']);
 
                    //Navigator.of(context).pushReplacementNamed('/homepage');
                  },
-                   child: CategoryItem(categoryName: data[index]['name'],)),
+                   child: CategoryItem(categoryName: data[index]['name'], isCategory: true,)),
         ),
       ),
       floatingActionButton: FloatingActionButton(

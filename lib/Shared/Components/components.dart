@@ -18,8 +18,10 @@ class Components{
     IconData? suffixIcon,
     required String? Function(String?) validator,
     void Function()? suffixFunction,
+    int maxLines =1,
   }) =>
       TextFormField(
+        maxLines: maxLines,
         obscureText: isPassword ? true : false,
         controller: controller,
         keyboardType: textInputType,
