@@ -8,6 +8,7 @@ import 'package:my_project/modules/Home/Views/widgets/category_item.dart';
 import 'package:my_project/modules/Notes/views/add_note.dart';
 
 import '../../../Shared/Components/components.dart';
+import 'edit_note.dart';
 
 class NoteScreen extends StatefulWidget {
   final String categoryName;
@@ -70,11 +71,18 @@ class _HomePageState extends State<NoteScreen> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 150),
           itemBuilder: (BuildContext context, int index) =>
               GestureDetector(
-                  onLongPress: (){
-                    showMyDialog(context,data[index].id,data[index]['note']);
-
-                    //Navigator.of(context).pushReplacementNamed('/homepage');
-                  },
+                  // onLongPress: (){
+                  //   showMyDialog(context,data[index].id,data[index]['note']);
+                  //
+                  //   //Navigator.of(context).pushReplacementNamed('/homepage');
+                  // },
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute
+                    (builder:
+                      (context) =>
+                          EditNote(categoryId: widget.categoryId, categoryName: widget.categoryName,
+                            noteId: data[index].id, oldContent: data[index]['note'],)));
+                },
                   child: CategoryItem(categoryName: data[index]['note'], isCategory: false,)),
         ),
       ),),
@@ -91,51 +99,51 @@ class _HomePageState extends State<NoteScreen> {
     );
   }
 
-  showMyDialog(context,id, oldName){
-    // return showDialog(
-    //     context: context,
-    //     builder: (BuildContext context){
-    //       return AlertDialog(
-    //         content: SizedBox(
-    //           height: 100,
-    //           child: Column(
-    //             children: [
-    //               SizedBox(
-    //                 width: double.infinity,
-    //                 child: MaterialButton(
-    //                   onPressed: (){
-    //                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditCategory(categoryId: id, oldName: oldName)));
-    //                   },
-    //                   child: const Text('Edit Name',style: TextStyle(fontSize: 20,color: Colors.orange),),
-    //                 ),
-    //               ),
-    //               Container(
-    //                 height: 1,
-    //                 width: double.infinity,
-    //                 color: Colors.grey,
-    //               ),
-    //               SizedBox(
-    //                 width: double.infinity,
-    //                 child: MaterialButton(
-    //                   onPressed: (){
-    //                     //assssssssssssssssssssssssssssssssskkkkkkkkkkkk
-    //                     const Components().showPopUp('Are you sure, you want to delete this folder?',
-    //                         context, DialogType.warning, 'Delete!',deleteProcess: true,function: () async{
-    //                           await FirebaseFirestore.instance.collection('categories').doc(id).delete();
-    //                           // setState(() {
-    //                           //
-    //                           // });
-    //                           Navigator.of(context).pushReplacementNamed('/homepage');
-    //                         });
-    //                   },
-    //                   child: const Text('Delete',style: TextStyle(fontSize: 20,color: Colors.orange),),
-    //                 ),
-    //               )
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     }
-    // );
-  }
+  // showMyDialog(context,id, oldContent){
+  //   return showDialog(
+  //       context: context,
+  //       builder: (BuildContext context){
+  //         return AlertDialog(
+  //           content: SizedBox(
+  //             height: 100,
+  //             child: Column(
+  //               children: [
+  //                 SizedBox(
+  //                   width: double.infinity,
+  //                   child: MaterialButton(
+  //                     onPressed: (){
+  //                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditNote(categoryId: widget.categoryId, categoryName: widget.categoryName, noteId: id, oldContent: oldContent,)));
+  //                     },
+  //                     child: const Text('Edit Name',style: TextStyle(fontSize: 20,color: Colors.orange),),
+  //                   ),
+  //                 ),
+  //                 Container(
+  //                   height: 1,
+  //                   width: double.infinity,
+  //                   color: Colors.grey,
+  //                 ),
+  //                 SizedBox(
+  //                   width: double.infinity,
+  //                   child: MaterialButton(
+  //                     onPressed: (){
+  //                       // //assssssssssssssssssssssssssssssssskkkkkkkkkkkk
+  //                       // const Components().showPopUp('Are you sure, you want to delete this folder?',
+  //                       //     context, DialogType.warning, 'Delete!',deleteProcess: true,function: () async{
+  //                       //       await FirebaseFirestore.instance.collection('categories').doc(id).delete();
+  //                       //       // setState(() {
+  //                       //       //
+  //                       //       // });
+  //                       //       Navigator.of(context).pushReplacementNamed('/homepage');
+  //                       //     });
+  //                     },
+  //                     child: const Text('Delete',style: TextStyle(fontSize: 20,color: Colors.orange),),
+  //                   ),
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       }
+  //   );
+  // }
 }

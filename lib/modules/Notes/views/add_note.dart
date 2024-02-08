@@ -35,7 +35,7 @@ class AddNote extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(builder:
             (context)=> NoteScreen(categoryName: categoryName, categoryId: categoryId)));
       } catch (error) {
-        components.showPopUp('Failed to add Category: $error,'
+        components.showPopUp('Failed to add Note: $error,'
             ' please try again later!',
             context, DialogType.error, 'Error');
       }
